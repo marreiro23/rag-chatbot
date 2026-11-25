@@ -27,6 +27,18 @@ services:
       - ./data/ollama:/root/.ollama
     networks:
       - local_network
+
+  cloudflare:
+    container_name: cloudflare
+    profiles:
+      - cloudflare
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate --url http://app:7860
+    depends_on:
+      - app
+    restart: unless-stopped
+    networks:
+      - local_network
       
 networks:
   local_network:
